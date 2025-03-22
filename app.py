@@ -6,7 +6,7 @@ from bson.objectid import ObjectId
 import os
 
 app = Flask(__name__)
-app.config['MONGO_URI'] = 'mongodb+srv://cherifaswak:<cherif2019>@cluster0.b5bfl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+app.config['MONGO_URI'] = 'mongodb://localhost:27017/milk_store'
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 mongo = PyMongo(app)
