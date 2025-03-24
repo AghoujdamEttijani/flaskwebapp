@@ -24,11 +24,29 @@
                             <option value="admin">Admin</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-success w-100">Register</button>
+                    <button type="submit" class="btn btn-success w-100">Register
+                        
+                    </button>
                 </form>
                 <p class="text-center mt-3">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
             </div>
         </div>
     </div>
 </div>
+ {% if error %}
+ <div  class="floating-alert onload="setTimeout()" style=" background-color:red ; border-radius: 20px; padding: 5px;margin-top: 10px; margin-bottom: 10px">
+<p style="color: #f1ebeb; rgb(236, 242, 243);">{{ error }}</p>
+</div>
+{% endif %}
+<script>
+    setTimeout(function() {
+        let alert = document.querySelector(".floating-alert");
+        if (alert) {
+            alert.style.opacity = "0";
+            setTimeout(() => alert.style.display = "none", 500);
+        }
+    }, 3000);  // Auto-hide after 3 seconds
+</script>
 {% endblock %}
+
+

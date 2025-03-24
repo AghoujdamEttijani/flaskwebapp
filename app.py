@@ -17,16 +17,23 @@ def home():
     products = mongo.db.products.find()
     return render_template('index.html', products=products)
 
-# Register User
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         username = request.form['username']
+        existing_user = mongo.db.users.find_one({'username': username})
+
+        if existing_user:
+            return render_template('register.html', error="Username already exists. Try another.")
+
+
         password = generate_password_hash(request.form['password'])
         role = request.form['role']  # 'admin' or 'user'
         mongo.db.users.insert_one({'username': username, 'password': password, 'role': role})
         return redirect(url_for('login'))
+
     return render_template('register.html')
+
 
 # Login User
 @app.route('/login', methods=['GET', 'POST'])
@@ -77,20 +84,25 @@ def update_product(product_id):
             price = request.form['price']
             image = request.files['image']
 
-            update_data = {'name': name, 'price': price}
-
-            # If a new image is uploaded, update it; otherwise, keep the old image
-            if image and image.filename:
+            if image and image.filename != '':
                 filename = secure_filename(image.filename)
                 image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 image.save(image_path)
-                update_data['image'] = image_path  # Update only if a new image is provided
+                mongo.db.products.update_one(
+                    {'_id': ObjectId(product_id)},
+                    {'$set': {'name': name, 'price': price, 'image': image_path}}
+                )
+            else:
+                mongo.db.products.update_one(
+                    {'_id': ObjectId(product_id)},
+                    {'$set': {'name': name, 'price': price}}
+                )
 
-            mongo.db.products.update_one({'_id': ObjectId(product_id)}, {'$set': update_data})
             return redirect(url_for('home'))
 
         return render_template('update_product.html', product=product)
     return redirect(url_for('home'))
+
 
 # Admin - Delete Product
 @app.route('/admin/delete_product/<product_id>', methods=['GET'])
