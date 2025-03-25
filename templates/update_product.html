@@ -19,9 +19,9 @@
                     <img src="{{ url_for('static', filename=product.image.split('static/')[-1]) }}" alt="Product Image" width="150" style="border-radius: 20px;">
                 
                     <label for="image">Upload New Image:</label>
-                    <input type="file" name="image">
+                    <input type="file" name="image" style="border-radius: 15px; background-color: beige;">
                 
-                    <button type="submit" style="border-radius: 20px; background-color: blue; color: whitesmoke;">Update Product</button>
+                    <button type="submit" class="update-btn">Update Product</button>
                 </form>
             </div>
         </div>

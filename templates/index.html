@@ -3,7 +3,7 @@
 {% block title %}Home - Milk Store{% endblock %}
 
 {% block content %}
-    <h2 class="text-center mb-4">Welcome to Milk Store 🥛</h2>
+    <h2 class="text-center mb-4"">Welcome to Milk Store 🥛</h2>
     <div class="row">
         {% for product in products %}
             <div class="col-md-4">
@@ -19,6 +19,11 @@
                             <a href="{{ url_for('update_product', product_id=product._id) }}" class="btn btn-warning">Edit</a>
                             <a href="{{ url_for('delete_product', product_id=product._id) }}" class="btn btn-danger">Delete</a>
                         {% endif %}
+                         <!-- WhatsApp Buy Button -->
+                <a href="https://api.whatsapp.com/send?phone=212698815095&text=I%20want%20to%20buy%20{{ product.name }}%20for%20${{ product.price }}."
+                    target="_blank" class="whatsapp-button">
+                    Buy on WhatsApp
+                    </a>
                     </div>
                 </div>
             </div>
