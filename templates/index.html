@@ -20,13 +20,13 @@
                             <a href="{{ url_for('delete_product', product_id=product._id) }}" class="btn btn-danger">Delete</a>
                         {% endif %}
                          <!-- WhatsApp Buy Button -->
-                <a href="https://api.whatsapp.com/send?phone=212698815095&text=I%20want%20to%20buy%20{{ product.name }}%20for%20${{ product.price }}."
-                    target="_blank" class="whatsapp-button">
-                    Buy on WhatsApp
+                    <a href="https://api.whatsapp.com/send?phone=212698815095&text=Je%20veux%20achete%20{{ product.name }}%20avec%20{{ product.price }}Dhs%20."
+                        target="_blank" class="whatsapp-button">
+                        Buy on WhatsApp
                     </a>
-                    </div>
                 </div>
             </div>
+        </div>
         {% endfor %}
     </div>
 {% endblock %}
