@@ -58,6 +58,7 @@ def add_product():
         if request.method == 'POST':
             name = request.form['name']
             price = request.form['price']
+            description = request.form['description']
             image = request.files.get('image')
             upload_folder = app.config.get('UPLOAD_FOLDER', 'static/uploads')
             
@@ -68,7 +69,7 @@ def add_product():
             else:
                 image_path = ''
                 
-            mongo.db.products.insert_one({'name': name, 'price': price, 'image': image_path})
+            mongo.db.products.insert_one({'name': name, 'price': price,'description': description,'image': image_path})
             return redirect(url_for('home'))
         return render_template('add_product.html')
     return redirect(url_for('home'))
@@ -82,6 +83,7 @@ def update_product(product_id):
         if request.method == 'POST':
             name = request.form['name']
             price = request.form['price']
+            description = request.form['description']
             image = request.files['image']
 
             if image and image.filename != '':
@@ -90,12 +92,12 @@ def update_product(product_id):
                 image.save(image_path)
                 mongo.db.products.update_one(
                     {'_id': ObjectId(product_id)},
-                    {'$set': {'name': name, 'price': price, 'image': image_path}}
+                    {'$set': {'name': name, 'price': price,'description': description, 'image': image_path}}
                 )
             else:
                 mongo.db.products.update_one(
                     {'_id': ObjectId(product_id)},
-                    {'$set': {'name': name, 'price': price}}
+                    {'$set': {'name': name, 'price': price,'description': description}}
                 )
 
             return redirect(url_for('home'))

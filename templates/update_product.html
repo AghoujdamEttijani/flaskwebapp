@@ -14,7 +14,10 @@
                 
                     <label for="price">Price:</label>
                     <input type="text" name="price" value="{{ product.price }}" required>
-                
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name = "description" type="text" value="{{ product.description }}" rows = "5" cols = "50" " required>
+                        
+                     </textarea>
                     <label>Current Image:</label>
                     <img src="{{ url_for('static', filename=product.image.split('static/')[-1]) }}" alt="Product Image" width="150" style="border-radius: 20px;">
                 

@@ -34,11 +34,10 @@ footer {
 .card-img-top{
     width: 50%;
     height: 200px; /* Adjust based on your image size */
-    margin-left: 50%;
     padding: 5px;
     border-radius: 25%;
     box-shadow: 0 4px 6px rgba(190, 240, 207, 0.1);
-    transition: transform 0.2s ease-in-out, background-color 0.3s ease-in
+    transition: transform 0.2s ease-in-out, background-color 0.3s ease-in;
 }
 /* Buttons */
 .btn {
@@ -75,4 +74,19 @@ footer {
 }
 .whatsapp-button:hover {
     background-color: #1EBE5D;
+}
+
+/* dispalying img and descritpion on same line*/
+.image-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #eaf1eb;
+    padding: 10px;
+    width: fit-content;
+}
+.image-container img {
+    width: 150px; /* Adjust as needed */
+    height: auto;
+    margin-right: 10px;
+    float: left;
 }
