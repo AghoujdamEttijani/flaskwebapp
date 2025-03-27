@@ -3,7 +3,8 @@
 {% block title %}Home - Milk Store{% endblock %}
 
 {% block content %}
-    <h2 class="text-center mb-4"">Welcome to Milk Store 🥛</h2>
+<h2 class="text-center mb-4"">Welcome to Milk Store 🥛</h2>
+<input class="search" type="text" id="searchInput" placeholder="Search products..." onkeyup="searchProducts()">
     <div class="row">
         {% for product in products %}
             <div class="col-md-4">
@@ -27,7 +28,7 @@
                          <!-- WhatsApp Buy Button -->
                             <a href="https://api.whatsapp.com/send?phone=21269881509&text=Je%20veux%20achete%20{{ product.name }}%20avec%20{{ product.price }}Dhs%20."
                                 target="_blank" class="whatsapp-button">
-                                Commonder
+                                Buy
                             </a>
                          {% endif %}
                 </div>
@@ -35,4 +36,22 @@
         </div>
         {% endfor %}
     </div>
+    
+    <script>
+        function searchProducts() {
+            let input = document.getElementById("searchInput").value.toLowerCase();
+            let productCards = document.querySelectorAll(".card-body");
+        
+            productCards.forEach(function(card) {
+                let productName = card.querySelector(".card-title").innerText.toLowerCase();
+                let productDescription = card.querySelector(".card-img-top").innerText.toLowerCase();
+        
+                if (productName.includes(input) || productDescription.includes(input)) {
+                    card.style.display = "block"; // Show matching products
+                } else {
+                    card.style.display = "none"; // Hide non-matching products
+                }
+            });
+        }
+        </script>
 {% endblock %}
