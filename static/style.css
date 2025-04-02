@@ -8,7 +8,9 @@ body {
     padding: 10px; 
     margin-bottom: 20px; 
     border: 1px solid #ccc;
-     border-radius: 25px
+    border-radius: 25px;
+    background-color: rgb(216, 216, 232);
+    
 }
 /* Navbar */
 .navbar {
@@ -30,26 +32,110 @@ footer {
 }
 
 /* Card Styles */
+/* Updated Card Styles */
 .card {
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out, background-color 0.3s ease-in-out;
-    max-width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    background: white;
+    overflow: hidden;
+    border: 1px solid #e1e8ed;
 }
 
 .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 128, 0, 0.3);
+    border-color: #2f663c;
+    background-color: #f0fff4; /* Softer green on hover */
+}
+
+/* Improved Image Styling */
+.card-img-top {
+    width: 100%;
+    height: 250px; /* Ensures uniform height */
+    object-fit: cover; /* Ensures full image coverage */
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover .card-img-top {
     transform: scale(1.05);
-    background-color: #e8f5ec;  /* Brighter light green */
-    border: 1px solid #2f663c;  /* Darker green border */
 }
-.card-img-top{
-    width: 50%;
-    height: 200px; /* Adjust based on your image size */
-    padding: 5px;
-    border-radius: 25%;
-    box-shadow: 0 4px 6px rgba(190, 240, 207, 0.1);
-    transition: transform 0.2s ease-in-out, background-color 0.3s ease-in;
+
+/* Buttons - More Modern */
+.btn {
+    border-radius: 10px;
+    font-weight: bold;
+    padding: 8px 15px;
+    transition: background-color 0.3s ease-in-out;
 }
+
+/* Green-themed buttons */
+.btn-success {
+    background-color: #28a745;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+/* Row div card adjustments for index page */
+.row {
+    margin-bottom: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Floating WhatsApp Button */
+.whatsapp-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 15px;
+    background-color: #25D366;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.whatsapp-button:hover {
+    background-color: #1EBE5D;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Image + Description in One Row */
+.image-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #eaf1eb;
+    padding: 10px;
+    border-radius: 8px;
+    width: fit-content;
+    background: white;
+}
+
+.image-container img {
+    width: 120px;
+    height: auto;
+    margin-right: 15px;
+    border-radius: 8px;
+}
+
+/* Alert Styling */
+.floating-alert {
+    background-color: rgb(243, 128, 128);
+    border-radius: 20px;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+}
+
 /* Buttons */
 .btn {
     border-radius: 5px;
@@ -92,7 +178,7 @@ footer {
     display: flex;
     align-items: center;
     border: 1px solid #eaf1eb;
-    padding: 10px;
+    padding: 1px;
     width: fit-content;
 }
 .image-container img {
@@ -100,4 +186,14 @@ footer {
     height: auto;
     margin-right: 10px;
     float: left;
+}
+/* users page css*/
+.container {
+    margin-top: 30px;
+}
+.table th, .table td {
+    text-align: center;
+}
+.btn {
+    margin: 5px;
 }

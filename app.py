@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_pymongo import PyMongo
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
 from bson.objectid import ObjectId
 import os
@@ -51,6 +52,43 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for('home'))
+
+@app.route('/admin/users')
+def manage_users():
+    if 'user' in session and session['role'] == 'admin':
+        users = mongo.db.users.find()
+        return render_template('users.html', users=users)
+    return redirect(url_for('login'))
+
+@app.route('/admin/edit_user/<user_id>', methods=['GET', 'POST'])
+def edit_user(user_id):
+    if 'user' in session and session['role'] == 'admin':
+        user = mongo.db.users.find_one({'_id': ObjectId(user_id)})
+
+        if request.method == 'POST':
+            new_username = request.form['username']
+            new_role = request.form['role']
+            new_password = request.form['password']
+
+            update_data = {'username': new_username, 'role': new_role}
+
+            if new_password:  # If password is provided, update it
+                hashed_password = generate_password_hash(new_password)
+                update_data['password'] = hashed_password
+
+            mongo.db.users.update_one({'_id': ObjectId(user_id)}, {'$set': update_data})
+            return redirect(url_for('manage_users'))
+
+        return render_template('edit_user.html', user=user)
+    
+    return redirect(url_for('login'))
+
+@app.route('/admin/delete_user/<user_id>')
+def delete_user(user_id):
+    if 'user' in session and session['role'] == 'admin':
+        mongo.db.users.delete_one({'_id': ObjectId(user_id)})
+    return redirect(url_for('manage_users'))
+
 
 @app.route('/admin/add_product', methods=['GET', 'POST'])
 def add_product():
