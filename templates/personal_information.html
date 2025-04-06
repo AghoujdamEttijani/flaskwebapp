@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}Personal Information{% endblock %}
+
+{% block content %}
+<div class="container mt-4" style="background-color: white; border-radius: 25px; margin-bottom: 100px;">
+    <h2 class="text-center">Personal Information</h2>
+    <form action="{{ url_for('save_personal_info') }}" method="POST" class="mt-4">
+        <div class="mb-3">
+            <label for="fullname" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="fullname" name="fullname" required>
+        </div>
+        <div class="mb-3">
+            <label for="phone" class="form-label">Phone (like 06XXXXXXXX)</label>
+            <input type="tel" class="form-control" id="phone" name="phone" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary w-100" style="border-radius: 25px;">Save Information</button>
+    </form>
+</div>
+{% endblock %}

@@ -3,9 +3,10 @@
 {% block title %}Home - Milk Store{% endblock %}
 
 {% block content %}
-<h2 class="text-center mb-4"">Welcome to Milk Store 🥛</h2>
+<h1 class="text-center mb-4"">FOREVER-© </h1>
 <input class="search" type="text" id="searchInput" placeholder="Search products..." onkeyup="searchProducts()">
-    <div class="row">
+   
+<div class="row">
         {% for product in products %}
             <div class="col-md-4">
                 <div class="card mb-4">
@@ -21,11 +22,12 @@
                             <a href="{{ url_for('buy_product', product_id=product._id) }}" class="btn btn-primary">Buy</a>
                         
                         {% elif 'user' in session and session['role'] == 'admin' %}
-                            <a href="{{ url_for('update_product', product_id=product._id) }}" class="btn btn-warning">Edit</a>
+                            <a href="{{ url_for('update_product', product_id=product._id) }}" class="btn btn-success">Edit</a>
                             <a href="{{ url_for('delete_product', product_id=product._id) }}" class="btn btn-danger">Delete</a>
                         
                         {% else %}
                          <!-- WhatsApp Buy Button -->
+                          <a href=" {{ url_for('save_personal_info')}}" target="_blank" class="btn btn-primary">Send ORDER</a>
                             <a href="https://api.whatsapp.com/send?phone=21269881509&text=Je%20veux%20achete%20{{ product.name }}%20avec%20{{ product.price }}Dhs%20."
                                 target="_blank" class="whatsapp-button">
                                 Buy

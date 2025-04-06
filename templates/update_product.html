@@ -10,19 +10,18 @@
                 <h2 class="text-center">Update Product</h2>
                 <form method="POST" enctype="multipart/form-data">
                     <label for="name">Product Name:</label>
-                    <input type="text" name="name" value="{{ product.name }}" required>
-                
+                    <input type="text" name="name" value="{{ product.name }}" required><br><br>
                     <label for="price">Price:</label>
-                    <input type="text" name="price" value="{{ product.price }}" required>
-                    <label for="description" class="form-label">Description</label>
-                    <textarea id="description" name="description" placeholder="Enter product description..." rows="4" cols="37"></textarea><br>
+                    <input type="text" name="price" value="{{ product.price }}" required><br>
+                    <label for="description" class="form-label">Description : </label><br>
+                    <textarea id="description" name="description" placeholder="Enter product description..." rows="4" cols="37"></textarea><br><br>
                     <label>Current Image:</label>
-                    <img src="{{ url_for('static', filename=product.image.split('static/')[-1]) }}" alt="Product Image" width="150" style="border-radius: 20px;"><br>
+                    <img src="{{ url_for('static', filename=product.image.split('static/')[-1]) }}" alt="Product Image" width="150" style="border-radius: 20px;"><br><br>
                 
                     <label for="image">Upload New Image:</label>
-                    <input type="file" name="image" style="border-radius: 15px; background-color: beige;">
+                    <input type="file" name="image" style="border-radius: 15px; background-color: beige;"><br><br>
                 
-                    <button type="submit" class="update-btn">Update Product</button>
+                    <button type="submit" class="btn btn-primary w-100">Update Product</button>
                 </form>
             </div>
         </div>

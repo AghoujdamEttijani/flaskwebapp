@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template,flash, request, redirect, url_for, session
 from flask_pymongo import PyMongo
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
+from flask_mail import Mail, Message
 from bson.objectid import ObjectId
 import os
 
@@ -11,6 +12,35 @@ app.config['MONGO_URI'] = 'mongodb://localhost:27017/milk_store'
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 mongo = PyMongo(app)
+
+# send_email 
+# 🔹 Configure Flask-Mail with Gmail SMTP
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'cherifaswak@gmail.com'  # 🔹 Your Gmail
+app.config['MAIL_PASSWORD'] = 'your-app-password'  # 🔹 Use App Password (not your real password)
+app.config['MAIL_DEFAULT_SENDER'] = 'cherifaswak@gmail.com'
+
+mail = Mail(app)
+@app.route('/send_email', methods=['GET', 'POST'])
+def send_email():
+    if request.method == 'POST':
+        recipient = request.form['to']
+        subject = request.form['subject']
+        message_body = request.form['message']
+
+        msg = Message(subject, recipients=[recipient], body=message_body)
+        
+        try:
+            mail.send(msg)
+            flash("Email sent successfully!", "success")
+        except Exception as e:
+            flash(f"Error: {str(e)}", "danger")
+
+        return redirect(url_for('send_email'))
+
+    return render_template('send_email.html')
 
 # Home Route
 @app.route('/')
@@ -26,7 +56,6 @@ def register():
 
         if existing_user:
             return render_template('register.html', error="Username already exists. Try another.")
-
 
         password = generate_password_hash(request.form['password'])
         role = request.form['role']  # 'admin' or 'user'
@@ -88,6 +117,45 @@ def delete_user(user_id):
     if 'user' in session and session['role'] == 'admin':
         mongo.db.users.delete_one({'_id': ObjectId(user_id)})
     return redirect(url_for('manage_users'))
+
+# add pesonal info
+@app.route('/personal_information', methods=['GET', 'POST'])
+def save_personal_info():
+    if request.method == 'POST':
+        fullname = request.form['fullname']
+        phone = request.form['phone']
+        email = request.form['email']
+        address = request.form['address']
+        
+        # Save to MongoDB
+        mongo.db.personal_info.insert_one({
+            'fullname': fullname,
+            'phone': phone,
+            'email': email,
+            'address': address
+        })
+        
+        return redirect(url_for('home'))  # Redirect to home page after saving
+    return render_template('personal_information.html')
+
+@app.route('/admin/costumers')
+def manage_costumers():
+    if 'user' in session and session['role'] == 'admin':
+        costumers = mongo.db.personal_info.find()
+        return render_template('costumers.html', costumers=costumers)
+
+    return redirect(url_for('costumers'))
+
+from bson.objectid import ObjectId
+
+@app.route('/delete_customer/<personal_info_id>')
+def delete_customer(personal_info_id):
+    if 'user' in session and session['role'] == 'admin':
+        # Make sure to convert string ID to ObjectId
+        result = mongo.db.personal_info.delete_one({'_id': ObjectId(personal_info_id)})
+        print("Deleted:", result.deleted_count)  # Optional debug log
+        return redirect(url_for('manage_costumers'))
+    return redirect(url_for('login'))
 
 
 @app.route('/admin/add_product', methods=['GET', 'POST'])
