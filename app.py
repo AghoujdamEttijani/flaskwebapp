@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 import os
 
 app = Flask(__name__)
-app.config['MONGO_URI'] = 'mongodb://localhost:27017/milk_store'
+app.config['MONGO_URI'] = 'mongodb://100.20.92.101/milk_store'
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 mongo = PyMongo(app)
