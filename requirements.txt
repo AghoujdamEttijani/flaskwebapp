@@ -4,8 +4,9 @@ Flask-Mail==0.9.1
 Werkzeug==2.3.6
 pymongo==4.5.0
 dnspython==2.3.0
+gunicorn==21.2.0
 # bson==0.5.10
 # python-dotenv==1.0.1
-# gunicorn==21.2.0
+
 
 
