@@ -1,14 +1,14 @@
 {% extends "layout.html" %}
 
-{% block title %}Personal Information{% endblock %}
+{% block title %}Order-FOREVER-©{% endblock %}
 
 {% block content %}
 <div class="container mt-4" style="background-color: white; border-radius: 25px; margin-bottom: 100px;">
     <h2 class="text-center">Personal Information</h2>
     <form action="{{ url_for('save_personal_info') }}" method="POST" class="mt-4">
         <div class="mb-3">
-            <label for="fullname" class="form-label">Full Name</label>
-            <input type="text" class="form-control" id="fullname" name="fullname" required>
+            <label for="full_name" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="fullname" name="full_name" required>
         </div>
         <div class="mb-3">
             <label for="phone" class="form-label">Phone (like 06XXXXXXXX)</label>
@@ -22,7 +22,26 @@
             <label for="address" class="form-label">Address</label>
             <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary w-100" style="border-radius: 25px;">Save Information</button>
+        <input type="hidden" name="product" value="{{ product_name }}">
+        <button type="submit" id="infoForm" class="btn btn-primary w-100" style="border-radius: 25px;" onclick="updateOrderCountDisplay()">Save Information</button>
     </form>
 </div>
+<script>
+  function incrementOrderCount() {
+    let count = parseInt(localStorage.getItem('orderCount')) || 0;
+    count += 1;
+    localStorage.setItem('orderCount', count);
+
+    const countSpan = document.querySelector('.order-count');
+    if (countSpan) {
+        countSpan.textContent = count;
+    }
+
+    // Save timestamp if not already set
+    if (!localStorage.getItem('lastReset')) {
+        localStorage.setItem('lastReset', new Date().getTime());
+    }
+}
+
+</script>
 {% endblock %}

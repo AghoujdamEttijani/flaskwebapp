@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Milk Store{% endblock %}</title>
+    <title>{% block title %}FOREVER-©{% endblock %}</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='uploads/tube.png') }}">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
@@ -63,5 +63,25 @@
             document.body.style.backgroundColor = `rgb(${132 - scrollY / 5}, ${176 - scrollY / 10}, ${103 - scrollY / 15})`;
                 });
     </script> -->
+
+    <script>
+        let lastScrollTop = 0;
+        const footer = document.querySelector("footer");
+    
+        window.addEventListener("scroll", function () {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+            if (scrollTop > lastScrollTop) {
+                // Scrolling down
+                footer.classList.add("hidden");
+            } else {
+                // Scrolling up
+                footer.classList.remove("hidden");
+            }
+    
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Avoid negative scroll
+        });
+    </script>
+    
 </body>
 </html>

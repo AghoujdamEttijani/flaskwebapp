@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block title %}Customers Information{% endblock %}
+{% block title %}Clients-FOREVER-©{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
@@ -14,6 +14,8 @@
                 <th>Phone</th>
                 <th>Email</th>
                 <th>Address</th>
+                <th>Product</th>
+                <th>Orders</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -21,10 +23,12 @@
             {% for customer in costumers %}
             <tr>
                 <!-- <td>{{ customer._id }}</td> -->
-                <td>{{ customer.fullname }}</td>
+                <td>{{ customer.full_name }}</td>
                 <td>{{ customer.phone }}</td>
                 <td>{{ customer.email }}</td>
                 <td>{{ customer.address }}</td>
+                <td>{{ customer.product }}</td>
+                <td>{{ customer.nb_order}}</td>
                 <td>
                     <a href="https://wa.me/212{{customer.phone[1:] }}?text=Hello%20{{customer.fullname|urlencode }},%20you%20are%20welcome%20to%20Milk%20Store!" class="btn btn-success btn-sm" target="_blank">
                         <i class="fab fa-whatsapp"></i> Contact </a>

@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block title %}Login - Milk Store{% endblock %}
+{% block title %}Login - FOREVER-© {% endblock %}
 
 {% block content %}
 <div class="container">
@@ -15,7 +15,10 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Password</label>
-                        <input type="password" class="form-control" name="password" required>
+                        <div class="input-group">
+                            <input type="password" id="password" class="form-control" name="password" required>
+                            <button type="button" class="btn btn-outline-secondary" style="border: none;"" onclick="togglePassword()">👁️</button>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Login</button>
                 </form>
@@ -24,4 +27,15 @@
         </div>
     </div>
 </div>
+
+<script>
+    function togglePassword() {
+        let passwordInput = document.getElementById("password");
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
+    }
+</script>
 {% endblock %}

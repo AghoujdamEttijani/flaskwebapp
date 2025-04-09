@@ -33,12 +33,15 @@ body {
   }
 /* Footer */
 footer {
-    border-radius: 30px 30px 0px 0px;
-    background-color: #f5f7fa;
-    color: #f7f9f9;
-    position: relative;
+    transition: transform 0.3s ease-in-out;
+    position: fixed;
     bottom: 0;
-    
+    width: 100%;
+    z-index: 1000;
+}
+
+footer.hidden {
+    transform: translateY(100%);
 }
 
 /* Card Styles */
@@ -205,4 +208,64 @@ footer {
 }
 .btn {
     margin: 5px;
+}
+
+.floating-buttonCounter {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25D366;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 20px;
+    font-size: 20px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.floating-buttonCounter:hover {
+    background-color: #1EBE5D;
+}
+
+/* Styling for order count */
+.order-count {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Floating trigger button */
+.fullscreen-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(12, 6, 6, 0.9); /* Transparent white */
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 79%;
+}
+
+.popup-content {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #333;
 }

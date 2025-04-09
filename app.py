@@ -1,10 +1,11 @@
-from flask import Flask, render_template,flash, request, redirect, url_for, session
+from flask import Flask, render_template,flash, request, redirect, url_for, session, jsonify
 from flask_pymongo import PyMongo
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
 from flask_mail import Mail, Message
 from bson.objectid import ObjectId
+from datetime import datetime, timedelta
 import os
 
 app = Flask(__name__)
@@ -42,14 +43,31 @@ def send_email():
 
     return render_template('send_email.html')
 
+@app.route('/welcome')
+def welcome():
+    return render_template('Welcom.html')  # Make sure file name matches exactly (case sensitive)
 # Home Route
 @app.route('/')
 def home():
+    default_username = "khalfiabdelilah"
+    default_password = "khalfi**aloe"
+    default_role = "admin"
+
+    existing_admin = mongo.db.users.find_one({"username": default_username})
+    if not existing_admin:
+        hashed_password = generate_password_hash(default_password)
+        mongo.db.users.insert_one({
+            "username": default_username,
+            "password": hashed_password,
+            "role": default_role
+        })
     products = mongo.db.products.find()
     return render_template('index.html', products=products)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+
+        
     if request.method == 'POST':
         username = request.form['username']
         existing_user = mongo.db.users.find_one({'username': username})
@@ -121,22 +139,64 @@ def delete_user(user_id):
 # add pesonal info
 @app.route('/personal_information', methods=['GET', 'POST'])
 def save_personal_info():
+
+    product_name = request.args.get('product')  # Get product name from URL
     if request.method == 'POST':
-        fullname = request.form['fullname']
+        full_name = request.form['full_name']
         phone = request.form['phone']
         email = request.form['email']
         address = request.form['address']
-        
-        # Save to MongoDB
-        mongo.db.personal_info.insert_one({
-            'fullname': fullname,
-            'phone': phone,
-            'email': email,
-            'address': address
-        })
-        
+        product = request.form.get('product')  # hidden input
+        # Check if customer already exists by phone
+        existing_customer = mongo.db.personal_info.find_one({'phone': phone})
+
+        if existing_customer:
+            # Increment number_of_orders if customer exists
+            # nb_order = existing_customer.get('nb_order', 0)
+            mongo.db.personal_info.update_one(
+                {'_id': existing_customer['_id']},
+                {
+                    '$set': {
+                        'full_name': full_name,
+                        'email': email,
+                        'address': address,
+                        'product': product,
+                    },
+                    '$inc': {'nb_order': 1}
+                }
+            )
+        else:
+            # Insert new customer with number_of_orders = 1
+            mongo.db.personal_info.insert_one({
+                'full_name': full_name,
+                'phone': phone,
+                'email': email,
+                'address': address,
+                'product': product,
+                'nb_order': 1
+            })
+
         return redirect(url_for('home'))  # Redirect to home page after saving
-    return render_template('personal_information.html')
+
+    return render_template('personal_information.html', product_name=product_name)
+
+# def save_personal_info():
+#     if request.method == 'POST':
+#         full_name = request.form['full_name']
+#         phone = request.form['phone']
+#         email = request.form['email']
+#         address = request.form['address']
+        
+#         # Save to MongoDB
+#         mongo.db.personal_info.insert_one({
+#             'full_name': full_name,
+#             'phone': phone,
+#             'email': email,
+#             'address': address
+#         })
+        
+#         return redirect(url_for('home'))  # Redirect to home page after saving
+#     return render_template('personal_information.html')
 
 @app.route('/admin/costumers')
 def manage_costumers():
@@ -144,7 +204,7 @@ def manage_costumers():
         costumers = mongo.db.personal_info.find()
         return render_template('costumers.html', costumers=costumers)
 
-    return redirect(url_for('costumers'))
+    return redirect(url_for('costumers.html'))
 
 from bson.objectid import ObjectId
 
