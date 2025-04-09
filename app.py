@@ -9,7 +9,6 @@ from datetime import datetime, timedelta
 import os
 
 app = Flask(__name__)
-const port = process.env.PORT || 4000
 app.config['MONGO_URI'] = 'mongodb+srv://<cherifaswak>:<cherif2019>@renderproject1cluster.tc990wu.mongodb.net/'
 app.config['SECRET_KEY'] = '1a2b3c'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
