@@ -13,8 +13,12 @@ import xlwt
 from io import BytesIO
 
 app = Flask(__name__)
+<<<<<<< HEAD
 
 app.config['MONGO_URI'] = "mongodb://localhost:27017/milk_store"
+=======
+app.config['MONGO_URI'] = 'mongodb://localhost:27017/milk_store'
+>>>>>>> f52fa18 (delete img)
 app.config['SECRET_KEY'] = '1a2b3c'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 mongo = PyMongo(app)

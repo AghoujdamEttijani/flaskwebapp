@@ -3,10 +3,18 @@ Flask-PyMongo==2.3.0
 Flask-Mail==0.9.1
 Werkzeug==2.3.6
 pymongo==4.5.0
+<<<<<<< HEAD
 gunicorn==21.2.0
 python-dotenv==1.0.1
 flask-cors==4.0.0
 loguru==0.7.2
 xlwt
+=======
+dnspython==2.3.0
+gunicorn==21.2.0
+# bson==0.5.10
+# python-dotenv==1.0.1
+
+>>>>>>> f52fa18 (delete img)
 
 
