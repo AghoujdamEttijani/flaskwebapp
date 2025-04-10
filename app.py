@@ -16,16 +16,7 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads'
 mongo = PyMongo(app)
 
 
-# send_email 
-#Configure Flask-Mail with Gmail SMTP
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'cherifaswak@gmail.com'  #our Gmail
-app.config['MAIL_PASSWORD'] = 'your-app-password'  #Use App Password (not your real password)
-app.config['MAIL_DEFAULT_SENDER'] = 'cherifaswak@gmail.com'
 
-mail = Mail(app)
 
 @app.route('/')
 def home():
@@ -43,7 +34,16 @@ def home():
         })
     products = mongo.db.products.find()
     return render_template('index.html', products=products)
-    
+# send_email 
+#Configure Flask-Mail with Gmail SMTP
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'cherifaswak@gmail.com'  #our Gmail
+app.config['MAIL_PASSWORD'] = 'your-app-password'  #Use App Password (not your real password)
+app.config['MAIL_DEFAULT_SENDER'] = 'cherifaswak@gmail.com'
+
+mail = Mail(app)
 @app.route('/send_email', methods=['GET', 'POST'])
 def send_email():
     if request.method == 'POST':
