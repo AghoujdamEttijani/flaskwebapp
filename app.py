@@ -26,6 +26,25 @@ app.config['MAIL_PASSWORD'] = 'your-app-password'  # 🔹 Use App Password (not 
 app.config['MAIL_DEFAULT_SENDER'] = 'cherifaswak@gmail.com'
 
 mail = Mail(app)
+
+# Home Route
+@app.route('/')
+def home():
+    default_username = "khalfiabdelilah"
+    default_password = "khalfi**aloe"
+    default_role = "admin"
+
+    existing_admin = mongo.db.users.find_one({"username": default_username})
+    if not existing_admin:
+        hashed_password = generate_password_hash(default_password)
+        mongo.db.users.insert_one({
+            "username": default_username,
+            "password": hashed_password,
+            "role": default_role
+        })
+    products = mongo.db.products.find()
+    return render_template('index.html', products=products)
+    
 @app.route('/send_email', methods=['GET', 'POST'])
 def send_email():
     if request.method == 'POST':
@@ -44,32 +63,8 @@ def send_email():
         return redirect(url_for('send_email'))
 
     return render_template('send_email.html')
-
-@app.route('/welcome')
-def welcome():
-    return render_template('Welcom.html')  # Make sure file name matches exactly (case sensitive)
-# Home Route
-@app.route('/')
-def home():
-    default_username = "khalfiabdelilah"
-    default_password = "khalfi**aloe"
-    default_role = "admin"
-
-    existing_admin = mongo.db.users.find_one({"username": default_username})
-    if not existing_admin:
-        hashed_password = generate_password_hash(default_password)
-        mongo.db.users.insert_one({
-            "username": default_username,
-            "password": hashed_password,
-            "role": default_role
-        })
-    products = mongo.db.products.find()
-    return render_template('index.html', products=products)
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-
-        
     if request.method == 'POST':
         username = request.form['username']
         existing_user = mongo.db.users.find_one({'username': username})
