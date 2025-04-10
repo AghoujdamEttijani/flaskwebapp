@@ -27,7 +27,6 @@ app.config['MAIL_DEFAULT_SENDER'] = 'cherifaswak@gmail.com'
 
 mail = Mail(app)
 
-# Home Route
 @app.route('/')
 def home():
     default_username = "khalfiabdelilah"
