@@ -14,8 +14,7 @@ app.config['MONGO_URI'] = 'mongodb+srv://<cherifaswak>:<cherif2019>@renderprojec
 app.config['SECRET_KEY'] = '1a2b3c'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 mongo = PyMongo(app)
-port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+
 
 # send_email 
 # 🔹 Configure Flask-Mail with Gmail SMTP
@@ -302,3 +301,5 @@ def buy_product(product_id):
 
 if __name__ == '__main__':
     app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
