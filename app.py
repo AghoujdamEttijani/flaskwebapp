@@ -15,9 +15,6 @@ app.config['SECRET_KEY'] = '1a2b3c'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 mongo = PyMongo(app)
 
-
-
-
 @app.route('/')
 def home():
     default_username = "khalfiabdelilah"
