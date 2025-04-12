@@ -22,23 +22,23 @@ def home():
     default_password = "khalfi**aloe"
     default_role = "admin"
 
+    products = []  # define fallback to avoid NameError
+
     try:
-         existing_admin = mongo.db.users.find_one({"username": default_username})
-         if not existing_admin:
+        existing_admin = mongo.db.users.find_one({"username": default_username})
+        if not existing_admin:
             hashed_password = generate_password_hash(default_password)
             mongo.db.users.insert_one({
-            "username": default_username,
-            "password": hashed_password,
-            "role": default_role
-        })
-         products = mongo.db.products.find()
+                "username": default_username,
+                "password": hashed_password,
+                "role": default_role
+            })
+        products = mongo.db.products.find()
     except Exception as e:
         print("MongoDB query failed:", e)
-    existing_admin = None
-    
-   return render_template('index.html', products=products)
- 
-  
+
+    return render_template('index.html', products=products)
+
 # send_email 
 #Configure Flask-Mail with Gmail SMTP
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
