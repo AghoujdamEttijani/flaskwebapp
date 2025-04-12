@@ -37,7 +37,7 @@ def home():
     except Exception as e:
         print("MongoDB query failed:", e)
 
-    return render_template('home', products=products)
+    return render_template('home.html', products=products)
 
 # send_email 
 #Configure Flask-Mail with Gmail SMTP
