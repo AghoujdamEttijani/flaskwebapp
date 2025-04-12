@@ -16,7 +16,7 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads'
 mongo = PyMongo(app)
 
 # Home Route
-@app.route('/home')
+@app.route('/')
 def home():
     default_username = "khalfiabdelilah"
     default_password = "khalfi**aloe"
@@ -37,7 +37,7 @@ def home():
     except Exception as e:
         print("MongoDB query failed:", e)
 
-    return render_template('index.html', products=products)
+    return render_template('home', products=products)
 
 # send_email 
 #Configure Flask-Mail with Gmail SMTP
