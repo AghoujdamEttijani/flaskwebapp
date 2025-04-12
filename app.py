@@ -31,11 +31,13 @@ def home():
             "password": hashed_password,
             "role": default_role
         })
+         products = mongo.db.products.find()
     except Exception as e:
         print("MongoDB query failed:", e)
     existing_admin = None
-
-    products = mongo.db.products.find()
+    
+   return render_template('index.html', products=products)
+ 
   
 # send_email 
 #Configure Flask-Mail with Gmail SMTP
