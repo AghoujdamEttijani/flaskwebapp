@@ -10,11 +10,15 @@ import os
 
 app = Flask(__name__)
 
-app.config['MONGO_URI'] = 'mongodb+srv://cherifaswak:cherif2019@renderproject1cluster.tc990wu.mongodb.net/?retryWrites=true&w=majority&appName=renderproject1Cluster/dbstore'
+MONGO_URI = 'mongodb+srv://cherifaswak:cherif2019@renderproject1cluster.tc990wu.mongodb.net/?retryWrites=true&w=majority&appName=renderproject1Cluster'
 app.config['SECRET_KEY'] = '1a2b3c'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 mongo = PyMongo(app)
 
+client = MongoClient(MONGO_URI)
+db = client.get_default_database()
+if db is None:
+    db = client["dbstore"]
 # Home Route
 @app.route('/')
 def home():
