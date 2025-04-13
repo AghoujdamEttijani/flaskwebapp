@@ -1,5 +1,6 @@
 from flask import Flask, render_template,flash, request, redirect, url_for, session, jsonify
 from flask_pymongo import PyMongo
+from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
