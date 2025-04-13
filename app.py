@@ -26,13 +26,7 @@ def home():
     default_password = "khalfi**aloe"
     default_role = "admin"
     products = []  # define fallback to avoid NameError
-    hashed_password = ""
-    hashed_password = generate_password_hash(default_password)
-            mongo.db.users.insert_one({
-                "username": default_username,
-                "password": hashed_password,
-                "role": default_role
-            })
+   
     try:
         existing_admin = mongo.db.users.find_one({"username": default_username})
         if not existing_admin:
