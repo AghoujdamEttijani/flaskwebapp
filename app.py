@@ -23,7 +23,7 @@ def home():
     default_role = "admin"
 
     hashed_password = generate_password_hash(default_password)
-            mongo.db.users.insert_one({
+            mongo.db.dbstore.users.insert_one({
                 "username": default_username,
                 "password": hashed_password,
                 "role": default_role
