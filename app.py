@@ -17,9 +17,7 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads'
 mongo = PyMongo(app)
 
 client = MongoClient(app.config['MONGO_URI'])
-db = client.get_default_database()
-if db is None:
-    db = client["dbstore"]
+db = client["dbstore"]
 # Home Route
 @app.route('/')
 def home():
