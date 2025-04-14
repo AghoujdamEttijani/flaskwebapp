@@ -11,7 +11,7 @@ import os
 
 app = Flask(__name__)
 
-app.config["MONGO_URI"] = 'mongodb+srv://cherifaswak:cherif**2019@renderproject1cluster.tc990wu.mongodb.net/dbstore?retryWrites=true&w=majority'
+app.config["MONGO_URI"] = 'mongodb+srv://cherifaswak:cherif**2019@renderproject1cluster.tc990wu.mongodb.net/?retryWrites=true&w=majority'
 app.config['SECRET_KEY'] = '1a2b3c'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 mongo = PyMongo(app)
