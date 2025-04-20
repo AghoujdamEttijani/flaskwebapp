@@ -13,12 +13,8 @@ import xlwt
 from io import BytesIO
 
 app = Flask(__name__)
-<<<<<<< HEAD
 
-app.config['MONGO_URI'] = "git rebase --continue"
-=======
 app.config['MONGO_URI'] = 'mongodb+srv://cherifaswak:cherif**2019@renderproject1cluster.tc990wu.mongodb.net/?retryWrites=true&w=majority&appName=renderproject1Clustere'
->>>>>>> f52fa18 (delete img)
 app.config['SECRET_KEY'] = '1a2b3c'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 mongo = PyMongo(app)
