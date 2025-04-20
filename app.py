@@ -14,7 +14,7 @@ from io import BytesIO
 
 app = Flask(__name__)
 
-app.config['MONGO_URI'] = 'mongodb+srv://cherifaswak:cherif**2019@renderproject1cluster.tc990wu.mongodb.net/?retryWrites=true&w=majority&appName=renderproject1Clustere'
+app.config['MONGO_URI'] = 'mongodb+srv://cherifaswak:cherif**2019@renderproject1cluster.tc990wu.mongodb.net/db_store?retryWrites=true&w=majority&appName=renderproject1Clustere'
 app.config['SECRET_KEY'] = '1a2b3c'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 mongo = PyMongo(app)
