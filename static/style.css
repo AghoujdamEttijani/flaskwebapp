@@ -237,35 +237,34 @@ footer.hidden {
 }
 
 /* Floating trigger button */
-.fullscreen-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(12, 6, 6, 0.9); /* Transparent white */
-    backdrop-filter: blur(5px);
+.slideshow-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    opacity: 79%;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 20px;
+    background-color: #f0f0f0;
 }
 
-.popup-content {
-    text-align: center;
-    background: rgba(255, 255, 255, 0.95);
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+.slide {
     position: relative;
+    flex: 0 0 auto;
+    width: 200px;
+    text-align: center;
+    border-radius: 10px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 28px;
-    cursor: pointer;
+.slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.caption {
+    padding: 10px;
+    font-weight: bold;
     color: #333;
+    background: #f8f8f8;
 }

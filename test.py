@@ -7,7 +7,7 @@ client = MongoClient("mongodb://localhost:27017/")
 db = client["milk_store"]
 
 # Access a collection (like a table)
-collection = db["personal_info"]
+collection = db["personal_information"]
 
 # Get all documents
 documents = collection.find()

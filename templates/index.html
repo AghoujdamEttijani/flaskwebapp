@@ -5,6 +5,7 @@
 {% block content %}
 
 <h1 class="text-center mb-4"">FOREVER-© </h1>
+
 <input class="search" type="text" id="searchInput" placeholder="Search products..." onkeyup="searchProducts()">
    
 <div class="row">
@@ -43,18 +44,6 @@
             <span class="order-count">0</span> <!-- We will update this -->
         </button>
     {% endif %}
-
-        <!-- Full-page Transparent Popup (Visible by Default) -->
-         
-        <div id="fullscreenPopup" class="fullscreen-popup">
-            <div class="popup-content">
-                <span class="close-btn" onclick="closePopup()">&times;</span><br> 
-                <h2>Welcome to FOREVER STORE</h2>
-                <p>Place your order, explore products, or contact us now!</p>
-                <a href="{{ url_for('save_personal_info') }}" class="btn btn-primary">Make an Order</a>
-            </div>
-        </div>
-  
   
     <script>
         function searchProducts() {
@@ -89,20 +78,5 @@
             }
         }
         window.onload = updateOrderCountDisplay;
-    </script>
-    
-    <script>
-        function closePopup() {
-            document.getElementById("fullscreenPopup").style.display = "none";
-            localStorage.setItem("popupDismissed", "true");
-        }
-
-        window.onload = function() {
-            const dismissed = localStorage.getItem("popupDismissed");
-        if (!dismissed) {
-            document.getElementById("fullscreenPopup").style.display = "flex";
-            }
-            document.getElementById("fullscreenPopup").style.display = "flex";
-        };
-    </script>   
+    </script>  
 {% endblock %}

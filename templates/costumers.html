@@ -14,8 +14,8 @@
                 <th>Phone</th>
                 <th>Email</th>
                 <th>Address</th>
-                <th>Product</th>
-                <th>Orders</th>
+                <th>last Article</th>
+                <th>last Quantity</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -41,6 +41,7 @@
     {% else %}
     <p>No customer records found.</p>
     {% endif %}
+    <a href="{{ url_for('export_customers') }}" class="btn btn-success mb-3">Export to Excel</a>
 </div>
 
 <script>

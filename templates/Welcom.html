@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Cache-Control" content="no-store" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<style>
+     body {
+        background-color: rgb(254, 186, 23);
+        font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .page-title {
+        text-align: center;
+        font-size: 3rem;
+        background-color: #000407;
+        color: rgb(254, 186, 23);
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 10;
+    }
+
+    .page-title:hover {
+        background-color: #1976d2;
+    }
+
+    .slideshow-container {
+        max-width: 70%;
+        margin: 80px;
+        position: relative;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        /* border-radius: 15px; */
+    }
+
+    .slide {
+        display: none;
+        text-align: center;
+    }
+
+    .slide img {
+        width: 100%;
+        max-height: 400px;
+        object-fit: contain;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .caption {
+        padding: 15px;
+        font-size: 1.25rem;
+        font-weight: bold;
+        background-color: #1976d2;
+        color: white;
+    }
+
+    .caption:hover {
+        background-color: rgb(254, 186, 23);
+    }
+
+    .circle {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: red;
+        animation: moveCircles 10s infinite ease-in-out;
+        opacity: 0.7;
+        z-index: 1;
+    }
+
+    .circle:nth-child(1) { background-color: #FF5733; animation-duration: 12s; }
+    .circle:nth-child(2) { background-color: #33FF57; animation-duration: 14s; }
+    .circle:nth-child(3) { background-color: #3357FF; animation-duration: 10s; }
+    .circle:nth-child(4) { background-color: #FFC300; animation-duration: 8s; }
+
+    @keyframes moveCircles {
+        0% { transform: translate(0, 0); }
+        25% { transform: translate(200px, 100px); }
+        50% { transform: translate(-100px, 200px); }
+        75% { transform: translate(300px, -150px); }
+        100% { transform: translate(0, 0); }
+    }
+
+    .floating-button {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background-color: #1976d2;
+        color: white;
+        border: none;
+        padding: 15px 25px;
+        font-size: 1rem;
+        cursor: pointer;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        z-index: 999;
+        transition: background-color 0.3s ease;
+        /* border-radius: 8px; */
+    }
+
+    .floating-button:hover {
+        background-color: rgb(254, 186, 23);
+    }
+
+    /* ===== Responsive Styling ===== */
+    @media (max-width: 768px) {
+        .page-title {
+            font-size: 2rem;
+            padding: 15px;
+        }
+
+        .caption {
+            font-size: 1rem;
+            padding: 10px;
+        }
+
+        .floating-button {
+            font-size: 0.9rem;
+            padding: 10px 20px;
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .slide img {
+            max-height: 250px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .page-title {
+            font-size: 1.5rem;
+        }
+
+        .floating-button {
+            font-size: 0.8rem;
+            padding: 8px 16px;
+            bottom: 15px;
+            right: 15px;
+        }
+
+        .slideshow-container {
+            margin-top: 50px;
+        }
+    }
+</style>
+
+<body>
+    
+<!-- Custom Title Div -->
+<div class="page-title" id="dynamic-title">
+    Welcome to FOREVER STORE
+</div>
+<div class="slideshow-container">
+    {% for image in slideshow_images %}
+    <div class="slide">
+        <img src="{{ url_for('static', filename='uploads/' + image) }}" alt="{{ image }}">
+        <div class="caption">{{ image.split('.')[0] }}</div>
+    </div>
+    {% endfor %}
+</div>
+<!-- Floating circles behind the slideshow -->
+<div class="circle"></div>
+<div class="circle"></div>
+<div class="circle"></div>
+<div class="circle"></div>
+
+<!-- Floating button to go to index -->
+<a href="{{ url_for('index') }}">
+    <button class="floating-button">Enter Site</button>
+</a>
+
+<!-- Floating button to go to index -->
+<a href="{{ url_for('home') }}">
+    <button class="floating-button">Welcom to your Store</button>
+</a>
+
+<script>
+    let slideIndex = 0;
+    const slides = document.querySelectorAll(".slide");
+
+    function showSlides() {
+        slides.forEach((slide, i) => {
+            slide.style.display = "none";
+        });
+
+        slideIndex++;
+        if (slideIndex > slides.length) {
+            slideIndex = 1;
+        }
+
+        slides[slideIndex - 1].style.display = "block";
+        setTimeout(showSlides, 3000); // Change slide every 3 seconds
+    }
+
+    window.onload = showSlides;
+
+      // Loop through translations for title
+      const titleTranslations = [
+        'Welcome to FOREVER-©',        // English
+        'Bienvenue à FOREVER-©',      // French
+        'Bienvenido a FOREVER-©',     // Spanish
+        'Willkommen bei FOREVER-©',   // German
+        'Benvenuti in FOREVER-©'      // Italian
+    ];
+
+    let titleIndex = 0;
+
+    function changeTitle() {
+        titleIndex++;
+        if (titleIndex >= titleTranslations.length) {
+            titleIndex = 0; // Reset to first title
+        }
+
+        document.getElementById("dynamic-title").textContent = titleTranslations[titleIndex];
+    }
+
+    setInterval(changeTitle, 3000); // Change title every 3 seconds
+</script>
+</body>
+</html>

@@ -7,10 +7,14 @@ from flask_mail import Mail, Message
 from bson.objectid import ObjectId
 from datetime import datetime, timedelta
 import os
+import random
+from flask import send_file
+import xlwt
+from io import BytesIO
 
 app = Flask(__name__)
 
-app.config['MONGO_URI'] = 'mongodb+srv://<cherifaswak>:<cherif2019>@renderproject1cluster.tc990wu.mongodb.net/milk_store?retryWrites=true&w=majority&ssl=true'
+app.config['MONGO_URI'] = "mongodb://localhost:27017/milk_store"
 app.config['SECRET_KEY'] = '1a2b3c'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 mongo = PyMongo(app)
@@ -27,24 +31,41 @@ app.config['MAIL_DEFAULT_SENDER'] = 'cherifaswak@gmail.com'
 
 mail = Mail(app)
 
-# Home Route
+import os
+import random
+
 @app.route('/')
+def index():
+    uploads_path = os.path.join(app.static_folder, 'uploads')
+    all_images = [img for img in os.listdir(uploads_path) if img.lower().endswith(('.jpg', '.jpeg', '.png', '.gif'))]
+    random.shuffle(all_images)
+
+    return render_template('Welcom.html', slideshow_images=all_images[:5])  # Pick 5 random
+
+# Home Route
+@app.route('/home')
 def home():
     default_username = "khalfiabdelilah"
     default_password = "khalfi**aloe"
     default_role = "admin"
 
-    existing_admin = mongo.db.users.find_one({"username": default_username})
-    if not existing_admin:
-        hashed_password = generate_password_hash(default_password)
-        mongo.db.users.insert_one({
-            "username": default_username,
-            "password": hashed_password,
-            "role": default_role
-        })
-    products = mongo.db.products.find()
+    products = []  # define fallback to avoid NameError
+
+    try:
+        existing_admin = mongo.db.users.find_one({"username": default_username})
+        if not existing_admin:
+            hashed_password = generate_password_hash(default_password)
+            mongo.db.users.insert_one({
+                "username": default_username,
+                "password": hashed_password,
+                "role": default_role
+            })
+        products = mongo.db.products.find()
+    except Exception as e:
+        print("MongoDB query failed:", e)
+
     return render_template('index.html', products=products)
-    
+
 @app.route('/send_email', methods=['GET', 'POST'])
 def send_email():
     if request.method == 'POST':
@@ -63,8 +84,15 @@ def send_email():
         return redirect(url_for('send_email'))
 
     return render_template('send_email.html')
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    # If user is already logged in, redirect to login or homepage
+    if 'user' in session:
+        return render_template('register.html')
+    if not  'user' in session:
+        return render_template('login.html')
+
     if request.method == 'POST':
         username = request.form['username']
         existing_user = mongo.db.users.find_one({'username': username})
@@ -77,6 +105,7 @@ def register():
         mongo.db.users.insert_one({'username': username, 'password': password, 'role': role})
         return redirect(url_for('login'))
 
+    # If GET request, and user not logged in, show register page
     return render_template('register.html')
 
 
@@ -94,8 +123,17 @@ def login():
 # Logout
 @app.route('/logout')
 def logout():
-    session.clear()
-    return redirect(url_for('home'))
+    session.clear()  # Completely clear session
+    flash("You have been logged out.", "success")
+    return redirect(url_for('login'))
+
+@app.after_request
+def add_security_headers(response):
+    """Add cache control headers to prevent caching."""
+    response.cache_control.no_cache = True
+    response.cache_control.no_store = True
+    response.cache_control.must_revalidate = True
+    return response
 
 @app.route('/admin/users')
 def manage_users():
@@ -177,33 +215,14 @@ def save_personal_info():
 
     return render_template('personal_information.html', product_name=product_name)
 
-# def save_personal_info():
-#     if request.method == 'POST':
-#         full_name = request.form['full_name']
-#         phone = request.form['phone']
-#         email = request.form['email']
-#         address = request.form['address']
-        
-#         # Save to MongoDB
-#         mongo.db.personal_info.insert_one({
-#             'full_name': full_name,
-#             'phone': phone,
-#             'email': email,
-#             'address': address
-#         })
-        
-#         return redirect(url_for('home'))  # Redirect to home page after saving
-#     return render_template('personal_information.html')
-
 @app.route('/admin/costumers')
 def manage_costumers():
     if 'user' in session and session['role'] == 'admin':
         costumers = mongo.db.personal_info.find()
         return render_template('costumers.html', costumers=costumers)
+    else:
+        return redirect(url_for('login'))
 
-    return redirect(url_for('costumers.html'))
-
-from bson.objectid import ObjectId
 
 @app.route('/delete_customer/<personal_info_id>')
 def delete_customer(personal_info_id):
@@ -294,7 +313,39 @@ def buy_product(product_id):
         return redirect(url_for('home'))
     return redirect(url_for('login'))
 
+
+#export data in xls
+@app.route('/export_customers')
+def export_customers():
+    if 'user' in session and session['role'] == 'admin':
+        #  Make sure to convert cursor to list
+        customers = mongo.db.personal_info.find()
+
+        workbook = xlwt.Workbook()
+        sheet = workbook.add_sheet('Customers')
+
+        headers = ['Full Name', 'Phone', 'Email', 'Address']
+        for idx, header in enumerate(headers):
+            sheet.write(0, idx, header)
+
+        # This will now loop through all customers
+        for row_idx, customer in enumerate(customers, start=1):
+            sheet.write(row_idx, 0, customer.get('full_name', ''))
+            sheet.write(row_idx, 1, customer.get('phone', ''))
+            sheet.write(row_idx, 2, customer.get('email', ''))
+            sheet.write(row_idx, 3, customer.get('address', ''))
+
+        output = BytesIO()
+        workbook.save(output)
+        output.seek(0)
+
+        return send_file(
+            output,
+            as_attachment=True,
+            download_name='customers.xls',
+            mimetype='application/vnd.ms-excel'
+        )
+    return redirect(url_for('login'))
+
 if __name__ == '__main__':
     app.run(debug=True)
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)

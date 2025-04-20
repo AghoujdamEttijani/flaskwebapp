@@ -38,4 +38,11 @@
         }
     }
 </script>
+<script>
+    // This will prevent the user from going back to any previous pages after logout
+    window.history.forward();
+    function noBack() {
+        window.history.forward();
+    }
+</script>
 {% endblock %}
